@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{author}}</title>
+</head>
+<body>
+
+    <h1>List of To Do Tasks</h1>
+    {% if todolist|length > 0 %}
+
+        <h2>{{ todolist|length }} Tasks TODO in your list.</h2>
+
+        <table border = 1>
+
+            <thead>
+                <tr>
+                    <th>Sl No.</th>
+                    <th>Task</th>
+                    <th>Email</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+
+            {% for task in todolist %}
+            
+            <tr>
+                <th> {{ loop.index }} </th>
+                <td> {{ task[0] }} </td>
+                <td> {{ task[1] }} </td>
+                <td> {{ task[2]|capitalize }} </td>
+                <td><a href="/delete/{{loop.index}}">Delete</a></td>
+            </tr>
+            
+            {% endfor %}
+        </table>
+    {% else %}
+        <p><strong>No Tasks to display. Add tasks in your TODO List</strong></p>
+    {% endif %}
+
+    <hr>
+
+    <h1>Add a new task to your TODO List</h1>
+    <form action="/submit" method="post" id='submit_form'>
+        {% if errorlist|length > 0 %}
+            <div style="color:red">
+                <p><strong>Following errors occured while adding new item : </strong></p>
+                <ul>
+                    {% for error in errorlist %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+
+        <table>
+
+            <tr>
+                <td><label for="task">Task</label></td>
+                <td><input type="text" name="task"></td>
+            </tr>
+
+            <tr>
+                <td><label for="email">E-Mail</label></td>
+                <td><input type="text" name="email"></td>
+            </tr>
+
+            <tr>
+                <td><label for="priority">Select Priority</label></td>
+                <td>
+                    <select name="priority">
+                        <option value="low" selected>Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+
+    <form action="/clear" method="GET" id="clear_form"></form>
+    <form action="/save" method="GET" id="save_form"></form>
+
+    <table>
+        <tr>
+            <td><button type="submit" form="clear_form">Clear List</button></td>
+            <td><button type="submit" form="submit_form">Add To Do Item</button></td>
+            <td><button type="submit" form="save_form">Save List</button></td>
+        </tr>
+    </table>
+
+
+</body>
+</html>
